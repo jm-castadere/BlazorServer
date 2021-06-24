@@ -1,0 +1,63 @@
+﻿@page "/form"
+@using BlazorServer.Pages.Form
+
+<EditForm Model="@starship" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <InputText type="text" @bind-Value="starship.Identifier"
+                   class="form-control" placeholder="Identifier" />
+        @*<small><ValidationMessage For="()=>starship.Identifier"></ValidationMessage></small>*@
+
+    </div>
+    <div class="form-group">
+        <InputTextArea  placeholder="Description (optional)" @bind-Value="starship.Description" class="form-control" />
+    </div>
+    <div class="form-group">
+
+        <label>
+            Primary Classification:
+            <InputSelect @bind-Value="starship.Classification" class="form-control">
+                <option value="">Select classification ...</option>
+                <option value="Exploration">Exploration</option>
+                <option value="Diplomacy">Diplomacy</option>
+                <option value="Defense">Defense</option>
+            </InputSelect>
+        </label>
+    </div>
+    <div class="form-group">
+
+
+        <label>
+            <InputNumber placeholder="Maximum Accommodation" @bind-Value="starship.MaximumAccommodation" class="form-control" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Engineering Approval:
+            <InputCheckbox @bind-Value="starship.IsValidatedDesign" class="form-control" />
+        </label>
+    </div>
+    <div class="form-group">
+        <label>
+            Production Date:
+            <InputDate @bind-Value="starship.ProductionDate" class="form-control" />
+        </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+</EditForm>
+
+@code {
+    private Person starship = new Person();
+
+    private void HandleValidSubmit()
+    {
+        //Logger.LogInformation("HandleValidSubmit called");
+
+        // Process the valid form
+    }
+}

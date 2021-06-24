@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-BlazorServer-E365BB68-E39F-4205-ACA6-216AC4B71330</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Counter.razor~RF28e3b1fb.TMP" />
+    <None Remove="Pages\CounterBaseHerit.razor~RF29049191.TMP" />
+    <None Remove="Pages\Counter\CounterParent.razor~RF2ece8852.TMP" />
+    <None Remove="_Imports.razor~RF2a1ec373.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlazorModel\BlazorModel.csproj" />
+    <ProjectReference Include="..\BlazorService\BlazorService.csproj" />
+  </ItemGroup>
+
+</Project>

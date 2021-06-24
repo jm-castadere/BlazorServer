@@ -1,0 +1,32 @@
+﻿@page "/counter"
+@page "/counter/{valuecount:int}"
+@inherits CounterBase
+
+@using BlazorServer.Pages.Dynamic
+
+<h3>Counter with class Heritage</h3>
+
+
+@if (Loading)
+{
+    <p>Loading...</p>
+
+}
+else
+{
+    //control cretaed dynamic
+    <LinkDyna></LinkDyna>
+    
+
+    <p class="form-control">Current count: @currentCount</p>
+
+    <button class="btn btn-light"  style="color: @Color" @onclick="IncrementCount">Incr. C#</button>
+    
+    <button class="btn btn-primary"  
+            style="color: @Color"
+            disabled ="@(currentCount>=20)"
+            @onclick="() => currentCount++">Incr. HTML</button>
+
+    <button class="btn btn-info" onclick="increment3()">Incr+3 JS</button>
+
+}

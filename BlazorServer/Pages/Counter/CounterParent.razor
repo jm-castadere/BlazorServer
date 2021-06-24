@@ -1,0 +1,45 @@
+﻿@page "/counterparent"
+<h3>Counter Parent</h3>
+
+
+<p>Value initial</p>
+<input type="number" @bind="initValue"  class="text-muted"/>
+
+<div class="alert-primary p-4">
+    <Counter InitialCount="initValue"></Counter>
+</div>
+
+
+@code {
+
+    [Inject] protected IJSRuntime jsRuntime { get; set; }
+
+    private int initValue;
+
+    /// <summary>
+    /// After control loaded
+    /// </summary>
+    /// <param name="firstRender">is first render</param>
+    /// <returns></returns>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        //first
+        if (firstRender)
+        {
+            //call js function  window.askInitial->return JSON string 
+            var jsValue = await jsRuntime.InvokeAsync<string>("askInitial");
+
+            if (int.TryParse(jsValue,out int valRet))
+            {
+                //get value of JS
+                initValue = valRet;
+                //Refresh
+                StateHasChanged();
+            }
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+
+}
