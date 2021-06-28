@@ -34,42 +34,31 @@
 
 
     <script type="text/javascript">
-
         //defini global js functoin
         window.displayAlert = (nbr) => {
             alert("valeur maximum est de [" + nbr + "]");
-
         };
-
         window.askInitial = () => {
             let numberenter = prompt("entrez une valeur");
             return numberenter;
         };
-
-
         //JS Call C# function
         //Ref component  global
         var componentRefGlobal;
-
         //Function save value to global
         window.storeRefComponent = (ref) => {
             if (ref) {
-
                 componentRefGlobal = ref;
             }
         };
-
         //function js call c# function
         function increment3() {
             //ref component exist
             if (componentRefGlobal) {
                 //cal function c# of component
                 componentRefGlobal.invokeMethodAsync('IncrementBy3');
-
             }
-
         }
-
     </script>
 
 

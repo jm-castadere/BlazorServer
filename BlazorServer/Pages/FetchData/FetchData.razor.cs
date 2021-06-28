@@ -20,14 +20,22 @@ namespace BlazorServer.Pages.FetchData
 
         protected override async Task OnInitializedAsync()
         {
-            forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+            await GetForecast();
         }
 
+
+        protected async Task GetForecast()
+        {
+            await Task.Delay(2000);
+
+            forecasts = await ForecastService.GetForecastAsync(dateEnter);
+
+
+        }
 
         protected async Task GetDate()
         {
             forecasts = await ForecastService.GetForecastAsync(dateEnter);
-
 
         }
 
