@@ -26,7 +26,7 @@ namespace BlazorServer.Pages.FetchData
 
         protected async Task GetForecast()
         {
-            await Task.Delay(2000);
+            await Task.Delay(1000);
 
             forecasts = await ForecastService.GetForecastAsync(dateEnter);
 
