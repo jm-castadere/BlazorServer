@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorServer.Opts
+namespace BlazorModel.Opts
 {
     public class ApiOptions
     {
