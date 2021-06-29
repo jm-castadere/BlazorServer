@@ -1,4 +1,3 @@
-using System;
 using BlazorServer.Areas.Identity;
 using BlazorServer.Data;
 using BlazorServer.Opts;
@@ -12,6 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Polly;
+using Polly.Extensions.Http;
+using System;
+using System.Net.Http;
 
 namespace BlazorServer
 {
@@ -24,40 +27,68 @@ namespace BlazorServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+           
             //Razor
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+            services.AddScoped<AuthenticationStateProvider,
+                                RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            //Service api to Interface
             //services.AddSingleton<IWeatherForecastService, WeatherForecastService>();
-            services.AddHttpClient<IWeatherForecastService, HtppWeatherService>(
-                (serviceProvider, client) =>
+            //Service api to Interface
+            services.AddHttpClient<IWeatherForecastService, HtppWeatherService>((serviceProvider, client) =>
                 {
                     //get appsetting 
                     var optionsVal = serviceProvider.GetRequiredService<IOptions<ApiOptions>>();
+
                     //get and set urL de base of Appsettings
                     client.BaseAddress = new Uri(optionsVal.Value.Url);
+                })
+                //Add resilience strategie retry form polly
+                .AddPolicyHandler(GetHttPolicy());
+            
 
-                });
             //Service for appsettings
             services.AddOptions();
             //Init pattern configure class from   "Api": {"Url": "http//.."
             services.Configure<ApiOptions>(Configuration.GetSection("Api"));
+        }
+
+        /// <summary>
+        /// strategie for retry Resilience for Htpp
+        /// </summary>
+        /// <returns>Handler for retry</returns>
+        /// <remarks>use polly</remarks>
+        private IAsyncPolicy<HttpResponseMessage> GetHttPolicy()
+        {
+            return HttpPolicyExtensions
+                //if sever error
+                .HandleTransientHttpError()
+                //if error retry 3 and wait 
+                .WaitAndRetryAsync(3, retry => TimeSpan.FromMilliseconds(200 + (retry * 150)));
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

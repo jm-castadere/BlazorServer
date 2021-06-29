@@ -10,9 +10,9 @@ namespace BlazorModel.Opts
         //Url of appsetting -> "Url": "http//Localhost:6000"
         public string Url { get; set; }
 
-        public int Delay { get; set; }
-        
-        public int RetryMax { get; set; }
+        //Resilience manuel
+        //public int Delay { get; set; }
+        //public int RetryMax { get; set; }
 
 
     }

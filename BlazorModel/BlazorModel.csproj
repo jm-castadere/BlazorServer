@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Opts\ApiOptions.cs~RF5d22f9c.TMP" />
+    <None Remove="Opts\ApiOptions.cs~RF5f4fbd0.TMP" />
     <None Remove="WeatherForecast.cs~RF2a03b146.TMP" />
   </ItemGroup>
 

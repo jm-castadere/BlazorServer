@@ -25,8 +25,8 @@ namespace BlazorServer.Pages
             set => currentCount = value;
         }
 
-        //Parameter
-        [Parameter] public int InitialCount { get; set; }
+        //cascading Parameter WITH NAME
+        [CascadingParameter(Name= "Count")] public int InitialCount { get; set; }
 
 
         protected bool Loading { get; private set; }
